@@ -143,7 +143,7 @@ https://github.com/user-attachments/assets/c04e0a8a-8a2b-4f96-9024-25f55f978372
 
 </details>
 
-## Testing Speech-to-text Model - []()
+## Testing Speech-to-text Model - [biodatlab/distill-whisper-th-medium](https://huggingface.co/biodatlab/distill-whisper-th-medium)
 
 <details>
 <summary>Example - Python Code</summary>
