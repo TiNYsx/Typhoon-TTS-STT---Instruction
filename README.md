@@ -17,9 +17,9 @@ This repos is going to show you how to setup a Workspace and working with Speech
 + For downloading, you'll need to create a directory to store all the data from now on, so create a folder as you desire, for me it is `instruction/projects`.
 + Set your current directory to the project's path directory by using `cd instruction/projects`
 + Repository cloning command can be found on Huggingface page, for Typhoon 2 - 3B - Instruct it is `git clone https://huggingface.co/scb10x/llama3.2-typhoon2-3b-instruct`.
++ After installed the model, you're good to go to test the model!
 > [!NOTE]
 > This step might take a while, depends on how fast your wifi/internet is, it can take up to 10-30 minutes.
-+ After installed the model, you're good to go to test the model!
 
 ## Testing LLM Model - [llama3.2-typhoon2-3b-instruct](https://huggingface.co/scb10x/llama3.2-typhoon2-3b-instruct)
 
@@ -134,3 +134,101 @@ https://github.com/user-attachments/assets/c04e0a8a-8a2b-4f96-9024-25f55f978372
 </details>
 
 ## Testing Speech-to-text Model - []()
+
+<details>
+<summary>Example - Python Code</summary>
+
+```py
+from dataclasses import dataclass, asdict
+from transformers import pipeline
+import wave
+import pyaudio
+
+@dataclass
+class StreamParams:
+    format: int = pyaudio.paInt16
+    channels: int = 2
+    rate: int = 44100   
+    frames_per_buffer: int = 1024
+    input: bool = True
+    output: bool = False
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+class Recorder:
+    def __init__(self, stream_params: StreamParams) -> None:
+        self.stream_params = stream_params
+        self._pyaudio = None
+        self._stream = None
+        self._wav_file = None
+
+    def record(self, duration: int, save_path: str) -> None:
+        print("Start recording...")
+        self._create_recording_resources(save_path)
+        self._write_wav_file_reading_from_stream(duration)
+        self._close_recording_resources()
+        print("Stop recording")
+
+    def _create_recording_resources(self, save_path: str) -> None:
+        self._pyaudio = pyaudio.PyAudio()
+        self._stream = self._pyaudio.open(**self.stream_params.to_dict())
+        self._create_wav_file(save_path)
+
+    def _create_wav_file(self, save_path: str):
+        self._wav_file = wave.open(save_path, "wb")
+        self._wav_file.setnchannels(self.stream_params.channels)
+        self._wav_file.setsampwidth(self._pyaudio.get_sample_size(self.stream_params.format))
+        self._wav_file.setframerate(self.stream_params.rate)
+
+    def _write_wav_file_reading_from_stream(self, duration: int) -> None:
+        for _ in range(int(self.stream_params.rate * duration / self.stream_params.frames_per_buffer)):
+            audio_data = self._stream.read(self.stream_params.frames_per_buffer)
+            self._wav_file.writeframes(audio_data)
+
+    def _close_recording_resources(self) -> None:
+        self._wav_file.close()
+        self._stream.close()
+        self._pyaudio.terminate()
+
+def getSTTModel():
+    pipe = pipeline(
+        task="automatic-speech-recognition",
+        model=sttModel,
+        chunk_length_s=30,
+        device=device)
+    return pipe
+
+def getRecorder(time):
+    stream_params = StreamParams()
+    recorder = Recorder(stream_params)
+    recorder.record(time, "instruction/projects/audio.wav")
+
+def getTextFromRecord(pipe):
+    transcriptions = pipe(
+        "instruction/projects/audio.wav",
+        batch_size=16,
+        return_timestamps=False,
+        generate_kwargs={"language": "<|th|>", "task": "transcribe"}
+    )["text"]
+    return transcriptions
+
+device = "cpu"
+sttModel = "biodatlab/whisper-th-medium-combined"
+pipe = getSTTModel()
+getRecorder(5)
+print(getTextFromRecord(pipe))
+```
+</details>
+<details>
+<summary>Example - Input</summary>
+
+https://github.com/user-attachments/assets/7810b1e9-1410-4142-befa-84bb30fff3b6
+
+</details>
+<details>
+<summary>Example - Result</summary>
+
+สวัสดี ครับ คุณ ชื่อ อะไร หรอ ครับ
+
+</details>
