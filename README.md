@@ -129,7 +129,7 @@ print(getAiResponse("สวัสดี, คุณช่วยสอนฉัน
 <details>
 <summary>Example - Result</summary>
 
-[!link](https://gabalpha.github.io/read-audio/?p=https://github.com/TiNYsx/Typhoon-TTS-STT-Instruction/blob/2265e51f353d63ca4cad7e49a76a1ee8409c8eaf/instruction/projects/output.wav)
+https://github.com/user-attachments/assets/c04e0a8a-8a2b-4f96-9024-25f55f978372
 
 </details>
 
