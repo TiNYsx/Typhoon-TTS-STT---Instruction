@@ -3,6 +3,7 @@
 This repos is going to show you how to setup a Workspace and working with Speech-to-text and Text-to-speech AI using [llama3.2-typhoon2-3b-instruct](https://huggingface.co/scb10x/llama3.2-typhoon2-3b-instruct) developed by scb10x.
 
 ## Setting up workspace
+
 ### Downloading Python and VirtualEnvironment
 + You'll need to install [python](https://www.python.org/downloads/) on your device, for me, I'm using Python 3.12, which is the newest version for me rightnow.
 + Install [VirtualEnvironment](https://pypi.org/project/virtualenv/) for Python, or you can use `python -m pip install virtualenv` or for python3 `python3 -m pip install virtualenv`.
