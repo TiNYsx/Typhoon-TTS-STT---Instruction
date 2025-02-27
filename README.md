@@ -227,4 +227,4 @@ https://github.com/user-attachments/assets/7810b1e9-1410-4142-befa-84bb30fff3b6
 
 สวัสดี ครับ คุณ ชื่อ อะไร หรอ ครับ
 
-</details>
+</details> 
